@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Architecture Reviewer & Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a1f3a 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            color: #94a3b8;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: #fff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 0 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Reviewer Styles */
+        .section-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem;
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .section-btn.expanded {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+        }
+
+        .section-chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .section-btn.expanded .section-chevron {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 0 0 0.75rem 0.75rem;
+            border-left: 3px solid rgba(59, 130, 246, 0.5);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .topic {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .topic:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .topic h3 {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .topic p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+        }
+
+        /* Quiz Styles */
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .question-topic {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin: 0.75rem 0 0 0;
+        }
+
+        .options-container {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+
+        .option-btn {
+            padding: 1rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.75rem;
+            color: #e2e8f0;
+            text-align: left;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .option-btn.selected {
+            background: rgba(59, 130, 246, 0.2);
+            border: 2px solid #3b82f6;
+        }
+
+        .option-radio {
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected .option-radio {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.05rem;
+        }
+
+        /* Results Styles */
+        .results-container {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #60a5fa;
+            margin-bottom: 0.5rem;
+        }
+
+        .results-percentage {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .results-message {
+            color: #94a3b8;
+        }
+
+        .review-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #10b981;
+        }
+
+        .review-item.incorrect {
+            border-left-color: #ef4444;
+        }
+
+        .review-item-title {
+            color: #e2e8f0;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-item-answer {
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .review-item-correct {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .review-item-incorrect {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .review-item-explanation {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .question-text {
+                font-size: 1.2rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .results-score {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Computer Architecture Reviewer</h1>
+            <p>Master Memory Hierarchy, Memory Management & I/O Systems</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('reviewer')">📚 Reviewer</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">✓ Quiz</button>
+        </div>
+
+        <!-- Reviewer Tab -->
+        <div id="reviewer" class="tab-content active">
+            <!-- Memory Hierarchy Section -->
+            <button class="section-btn expanded" onclick="toggleSection('memory-hierarchy')">
+                <span>1. Memory Hierarchy</span>
+                <span class="section-chevron">▼</span>
+            </button>
+            <div id="memory-hierarchy" class="section-content active">
+                <div class="topic">
+                    <h3>Overview & Purpose</h3>
+                    <p>Memory Hierarchy is a system of organizing different types of memory based on speed, cost, and capacity. It minimizes access time by utilizing the principle of locality of references - the idea that data or nearby data is likely to be accessed again. The hierarchy ranges from ultra-fast CPU registers to slow secondary storage.</p>
+                </div>
+                <div class="topic">
+                    <h3>Levels of Memory Hierarchy (Fastest to Slowest)</h3>
+                    <p>Level 0: CPU Registers - <1KB, 0.25-0.5ns access time, managed by compiler
+Level 1: Cache Memory - <16MB, 0.5-25ns access time, SRAM-based
+Level 2: Main Memory (RAM) - <16GB, 80-250ns access time, DRAM
+Level 3: Magnetic Disk - >100GB, 50+ milliseconds, disk storage
+Level 4: Optical Disk - Large capacity, slower access
+Level 5: Magnetic Tape - Backup storage, slowest access</p>
+                </div>
+                <div class="topic">
+                    <h3>Key Characteristics</h3>
+                    <p>• Capacity: Increases from top to bottom (Registers < Cache < RAM < Disk)
+• Access Time: Increases from top to bottom (Registers fastest, Tape slowest)
+• Cost Per Bit: Decreases from top to bottom (Registers most expensive)
+• Performance: Faster memory near CPU improves system performance
+• Cost Efficiency: Balance between speed and storage capacity</p>
+                </div>
+                <div class="topic">
+                    <h3>Memory Types</h3>
+                    <p>Static RAM (SRAM): Fast, stores in flip-flops, used for cache, no refresh needed
+Dynamic RAM (DRAM): Larger capacity, requires refresh circuitry, used for main memory
+Secondary Storage: Hard drives (HDD), SSDs, optical disks - non-volatile</p>
+                </div>
+            </div>
+
+            <!-- Memory Management Section -->
+            <button class="section-btn" onclick="toggleSection('memory-management')">
+                <span>2. Memory Management</span>
+                <span class="section-chevron">▼</span>
+            </button>
+            <div id="memory-management" class="section-content">
+                <div class="topic">
+                    <h3>Address Binding</h3>
+                    <p>Logical Address: Generated by CPU during execution (virtual address)
+Physical Address: Actual location in memory
+Address Binding: Process of mapping logical to physical addresses
+
+Three Stages of Binding:
+1. Compile-time: Done by compiler before loading
+2. Load-time: Done by OS loader when program loads into memory
+3. Execution-time (Dynamic): Done by MMU during program execution
+
+MMU (Memory Management Unit): Hardware that performs runtime address translation</p>
+                </div>
+                <div class="topic">
+                    <h3>Swapping & Dynamic Loading</h3>
+                    <p>Swapping: Process of temporarily moving data from main memory to disk (backing store)
+- Allows total physical space to exceed actual physical memory
+- Increases multiprogramming degree
+- Backing store must be large enough for all memory images
+
+Dynamic Loading: Load routines only when called, not at startup
+- Improves memory space utilization
+- Routines kept in relocatable format on disk
+- Linking loader called when routine is needed</p>
+                </div>
+                <div class="topic">
+                    <h3>Contiguous Memory Allocation</h3>
+                    <p>Divides memory into partitions - each process occupies one contiguous block
+
+Fixed Partitioning: Equal-sized partitions, simple but inflexible
+Dynamic Partitioning: Variable-sized partitions based on process needs
+
+Allocation Strategies:
+• First Fit: Allocate first free block large enough
+• Best Fit: Allocate smallest free block that fits (minimizes waste)
+• Worst Fit: Allocate largest free block (maximizes remaining space)</p>
+                </div>
+                <div class="topic">
+                    <h3>Fragmentation</h3>
+                    <p>Internal Fragmentation: Unused space within allocated block
+- Occurs when process smaller than allocated partition
+- Problem with fixed partitioning
+- Solution: Best-fit allocation
+
+External Fragmentation: Non-contiguous free blocks cannot satisfy requests
+- Occurs with dynamic partitioning
+- Solutions: Compaction, paging, segmentation
+- Compaction: Reorganize memory to combine fragmented blocks</p>
+                </div>
+                <div class="topic">
+                    <h3>Segmentation</h3>
+                    <p>Non-contiguous memory allocation using logical segments
+Compiler creates segments: code, global variables, heap, stacks, libraries
+
+Segment Address: <segment-number, offset>
+Segment Table: Maps segment number to base address and limit
+
+Advantages:
+• No internal fragmentation
+• Smaller segment table than page table
+
+Disadvantages:
+• External fragmentation when processes loaded/unloaded
+• Complex to implement</p>
+                </div>
+                <div class="topic">
+                    <h3>Paging</h3>
+                    <p>Non-contiguous memory allocation using fixed-size pages
+Main memory divided into frames, secondary memory into pages
+
+Page Address: <page-number, page-offset>
+Page Table: Maps page number to frame number
+
+PTBR (Page Table Base Register): Points to page table location
+Page Offset: Doesn't need translation (same as frame offset)
+
+TLB (Translation Lookaside Buffer): Fast cache for page-to-frame mappings
+- TLB Hit: Mapping found, no page table access needed
+- TLB Miss: Access page table, load mapping into TLB
+
+Advantages: No external fragmentation, efficient swapping
+Disadvantages: Internal fragmentation possible, page table overhead, 2 memory accesses</p>
+                </div>
+                <div class="topic">
+                    <h3>Virtual Memory & Demand Paging</h3>
+                    <p>Virtual Memory: Illusion of unlimited memory by using disk as extension
+Allows processes larger than physical memory
+
+Demand Paging: Load pages only when referenced, not entire process
+Uses lazy swapper (Pager): Never swaps page unless needed
+
+Page Fault: Occurs when referenced page not in memory
+Steps: Check validity → Find free frame → Load page → Update tables → Restart instruction
+
+Advantages: Less I/O, less memory needed, faster response, more concurrent users</p>
+                </div>
+                <div class="topic">
+                    <h3>Page Replacement Algorithms</h3>
+                    <p>FIFO (First In First Out):
+• Simple, low overhead
+• Poor performance, suffers from Belady's Anomaly
+• More frames can increase page faults
+
+Optimal (OPT):
+• Replace page not used for longest time
+• Best performance but needs future knowledge
+• Complex to implement, impractical
+
+Least Recently Used (LRU):
+• Replace page not used in most time
+• Uses past knowledge, practical implementation
+• Better than FIFO, worse than OPT
+
+Thrashing: Condition where OS spends most time servicing page faults
+- CPU becomes idle
+- Increasing multiprogramming increases thrashing
+- Decreases utilization significantly</p>
+                </div>
+            </div>
+
+            <!-- Input/Output Section -->
+            <button class="section-btn" onclick="toggleSection('input-output')">
+                <span>3. Input/Output Systems</span>
+                <span class="section-chevron">▼</span>
+            </button>
+            <div id="input-output" class="section-content">
+                <div class="topic">
+                    <h3>I/O Systems Overview</h3>
+                    <p>Definition: Bridge between computer and external environment
+Enables data exchange with peripherals and users
+
+Why I/O Matters:
+• Critical for system performance
+• Essential for user interaction
+• Enables communication with outside world
+
+Key Concepts:
+• Data Transfer Rate: Speed of data movement
+• Bandwidth: Maximum data transfer capacity
+• Buffering: Temporary storage during transfer
+• Polling: CPU repeatedly checks device status
+• Interrupts: Device signals CPU when ready</p>
+                </div>
+                <div class="topic">
+                    <h3>Types of I/O Devices</h3>
+                    <p>Character Devices:
+• Sequential data transfer (keyboard, mouse)
+• Data transferred one character at a time
+
+Block Devices:
+• Fixed-size block storage (hard drives, SSDs)
+• Data transferred in blocks
+
+Communication Devices:
+• Network interface cards (NICs)
+• Enable data exchange over networks
+
+Sensors & Actuators:
+• Embedded system components
+• Physical interaction with environment</p>
+                </div>
+                <div class="topic">
+                    <h3>I/O System Components</h3>
+                    <p>I/O Modules & Controllers:
+• Specialized hardware managing CPU-to-peripheral communication
+• Handle data buffering and protocol translation
+• Act as intermediary between CPU and devices
+
+System Buses:
+• Data Bus: Carries information between components
+• Address Bus: Specifies memory/device locations
+• Control Bus: Manages operations and timing
+
+CPU-Memory Bus: Connects CPU and main memory
+I/O Bus: Connects I/O controllers to system
+Bus Adapter: Bridges different bus types</p>
+                </div>
+                <div class="topic">
+                    <h3>Data Transfer Methods</h3>
+                    <p>Programmed I/O:
+• CPU directly controls all data transfers
+• Processor continuously polls device status
+• Simple implementation but CPU-intensive
+• Not suitable for high-speed transfers
+
+Interrupt-Driven I/O:
+• CPU interrupted only when device ready
+• Processor free for other tasks while waiting
+• More efficient than programmed I/O
+• Still involves CPU in data transfer
+
+Direct Memory Access (DMA):
+• Dedicated DMA controller handles transfers
+• CPU completely offloaded from transfer
+• Ideal for high-speed, bulk data transfers
+• Essential for disk drives and network cards
+• Improves system performance significantly</p>
+                </div>
+                <div class="topic">
+                    <h3>I/O Challenges</h3>
+                    <p>CPU-Device Synchronization:
+• Speed difference between fast CPU and slow peripherals
+• Requires handshaking protocols and wait states
+• Risk of data loss if not managed carefully
+
+Multi-Device Management:
+• Handling multiple devices simultaneously
+• Efficient arbitration schemes needed
+• Priority handling to prevent conflicts
+• Error detection mechanisms required
+
+Speed Mismatch Problems:
+• CPU much faster than I/O devices
+• Creates bottlenecks requiring buffering
+• Asynchronous communication protocols needed
+• Polling/interrupts/DMA handle this</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div id="quiz" class="tab-content">
+            <!-- Quiz Interface -->
+            <div id="quiz-interface">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span id="question-counter">Question 1 of 13</span>
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Question -->
+                <div class="question-container">
+                    <span class="question-topic" id="question-topic">Memory Hierarchy</span>
+                    <h2 class="question-text" id="question-text">Loading question...</h2>
+                </div>
+
+                <!-- Options -->
+                <div class="options-container" id="options-container"></div>
+
+                <!-- Navigation -->
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()">← Previous</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
+                </div>
+            </div>
+
+            <!-- Results Interface -->
+            <div id="results-interface" style="display: none;">
+                <div class="results-container">
+                    <div class="results-score" id="final-score">0/13</div>
+                    <div class="results-percentage" id="final-percentage">0% Correct</div>
+                    <div class="results-message" id="results-message">Great effort!</div>
+                </div>
+
+                <h3 class="review-title">Review Your Answers</h3>
+                <div id="review-items"></div>
+
+                <button class="btn btn-primary btn-full" onclick="retakeQuiz()">↻ Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Question Bank with Many More Questions
+        const fullQuestionBank = [
+            // Memory Hierarchy Questions
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory level has the fastest access time?',
+                options: ['Cache Memory', 'CPU Registers', 'Main Memory', 'Magnetic Disk'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What is the primary purpose of memory hierarchy?',
+                options: ['To increase storage capacity', 'To minimize access time using locality of references', 'To eliminate the need for secondary storage', 'To reduce the cost of memory'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'As you move down the memory hierarchy, what increases?',
+                options: ['Speed and cost per bit', 'Capacity and access time', 'Only capacity', 'Only speed'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory type requires refresh circuitry?',
+                options: ['Static RAM (SRAM)', 'Dynamic RAM (DRAM)', 'Cache Memory', 'Magnetic Tape'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Approximately how many times faster is a register compared to main memory?',
+                options: ['10x faster', '100x faster', '1000x faster', '10,000x faster'],
+                correct: 2
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What is the typical access time for Cache Memory?',
+                options: ['0.25-0.5ns', '0.5-25ns', '80-250ns', '50+ milliseconds'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory level is used for temporary data storage during I/O operations?',
+                options: ['CPU Registers', 'Cache Memory', 'Main Memory', 'Magnetic Tape'],
+                correct: 2
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What principle justifies the use of cache memory?',
+                options: ['Moore\'s Law', 'Locality of references', 'Belady\'s Anomaly', 'FIFO principle'],
+                correct: 1
+            },
+
+            // Memory Management Questions
+            {
+                topic: 'Memory Management',
+                question: 'What does the MMU (Memory Management Unit) do?',
+                options: ['Allocates memory to processes', 'Performs address translation at runtime', 'Schedules CPU processes', 'Manages disk I/O'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'Which allocation strategy minimizes internal fragmentation?',
+                options: ['First Fit', 'Best Fit', 'Worst Fit', 'Random Fit'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is external fragmentation?',
+                options: ['Unused space within an allocated block', 'Non-contiguous free blocks unable to satisfy requests', 'Loss of memory due to page faults', 'Overflow of the segment table'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What does TLB stand for and what is its purpose?',
+                options: ['Temporal Lookup Buffer - stores recent page references', 'Translation Lookaside Buffer - caches page table entries', 'Table Location Buffer - manages page tables', 'Temporary Load Buffer - stores temporary data'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'Which page replacement algorithm can suffer from Belady\'s Anomaly?',
+                options: ['LRU', 'Optimal', 'FIFO', 'Second Chance'],
+                correct: 2
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is thrashing in virtual memory systems?',
+                options: ['Data corruption from page faults', 'Excessive page faults reducing CPU utilization', 'Fragmentation of physical memory', 'Overflow of the TLB'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'Swapping allows what in a memory management system?',
+                options: ['Faster CPU execution', 'Total physical space to exceed actual physical memory', 'Direct disk access without I/O modules', 'Elimination of cache misses'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'In paging, what is a TLB Hit?',
+                options: ['Page is found in secondary storage', 'Mapping found in TLB without accessing page table', 'Page fault occurs', 'Physical memory is full'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What does dynamic loading improve?',
+                options: ['CPU execution speed', 'Memory space utilization', 'Disk I/O speed', 'Cache hit ratio'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'Which segmentation creates separate segments?',
+                options: ['Code, data, and heap', 'Code, global variables, heap, stacks, and libraries', 'Only code and data', 'Only stack and heap'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is a page fault?',
+                options: ['Error in page table', 'Referenced page not in main memory', 'Page table overflow', 'TLB miss'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'In the optimal page replacement algorithm, which page is replaced?',
+                options: ['The oldest page', 'The page not used for longest time in future', 'The least recently used page', 'The page at the front of the queue'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What are the three stages of address binding?',
+                options: ['Input, Processing, Output', 'Compile-time, Load-time, Execution-time', 'Read, Write, Execute', 'Fetch, Decode, Execute'],
+                correct: 1
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is internal fragmentation?',
+                options: ['Free blocks scattered in memory', 'Unused space within an allocated block', 'Page table corruption', 'Cache memory waste'],
+                correct: 1
+            },
+
+            // Input/Output Questions
+            {
+                topic: 'Input/Output',
+                question: 'What is the primary purpose of I/O modules?',
+                options: ['Execute CPU instructions', 'Manage communication between CPU and peripherals', 'Store temporary data', 'Perform arithmetic operations'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which I/O device type transfers data sequentially?',
+                options: ['Block Devices', 'Character Devices', 'Communication Devices', 'Sensors'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'In programmed I/O, what does the CPU repeatedly do?',
+                options: ['Wait for interrupts', 'Poll device status', 'Transfer data directly to memory', 'Execute other programs'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What is the main advantage of Direct Memory Access (DMA)?',
+                options: ['Simplifies I/O programming', 'Eliminates need for I/O controllers', 'Allows high-speed data transfer without CPU involvement', 'Increases CPU performance'],
+                correct: 2
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which is an example of a block device?',
+                options: ['Keyboard', 'Mouse', 'Hard Drive (HDD)', 'Network Interface Card'],
+                correct: 2
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What does the control bus do?',
+                options: ['Carries data between components', 'Specifies memory locations', 'Manages operations and timing', 'Transfers instructions only'],
+                correct: 2
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which I/O transfer method is most CPU-intensive?',
+                options: ['Interrupt-Driven I/O', 'Direct Memory Access', 'Programmed I/O', 'Asynchronous I/O'],
+                correct: 2
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What is buffering in I/O systems?',
+                options: ['Temporary storage during data transfer', 'Direct transfer without waiting', 'Compression of data', 'Encryption of data'],
+                correct: 0
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which device requires DMA for optimal performance?',
+                options: ['Keyboard', 'Mouse', 'Hard Disk Drive', 'Display Monitor'],
+                correct: 2
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What is a DMA controller?',
+                options: ['A device that reads instructions from memory', 'A dedicated controller that handles data transfers independently', 'A CPU that specializes in I/O', 'A type of cache memory'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'How do interrupts improve I/O efficiency?',
+                options: ['They speed up data transfer', 'They allow CPU to work on other tasks while waiting for device', 'They eliminate the need for buffers', 'They reduce memory requirements'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What is the primary challenge in I/O systems?',
+                options: ['Lack of storage space', 'Speed mismatch between CPU and peripherals', 'Insufficient bandwidth', 'Poor device design'],
+                correct: 1
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which component bridges different bus types?',
+                options: ['I/O Module', 'Bus Adapter', 'I/O Controller', 'Data Controller'],
+                correct: 1
+            }
+        ];
+
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let showingResults = false;
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'quiz' && currentQuizQuestions.length === 0) {
+                initializeQuiz();
+            }
+        }
+
+        function toggleSection(sectionId) {
+            const btn = event.target.closest('.section-btn');
+            const content = document.getElementById(sectionId);
+            
+            btn.classList.toggle('expanded');
+            content.classList.toggle('active');
+        }
+
+        function initializeQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            showingResults = false;
+            generateRandomQuiz();
+            displayQuestion();
+        }
+
+        function generateRandomQuiz() {
+            const shuffled = [...fullQuestionBank].sort(() => Math.random() - 0.5);
+            currentQuizQuestions = shuffled.slice(0, 13);
+        }
+
+        function displayQuestion() {
+            if (showingResults) return;
+
+            const question = currentQuizQuestions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / currentQuizQuestions.length) * 100;
+
+            document.getElementById('question-counter').textContent = `Question ${currentQuestionIndex + 1} of ${currentQuizQuestions.length}`;
+            document.getElementById('progress-percentage').textContent = Math.round(progress) + '%';
+            document.getElementById('progress-fill').style.width = progress + '%';
+            
+            document.getElementById('question-topic').textContent = question.topic;
+            document.getElementById('question-text').textContent = question.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                if (userAnswers[currentQuestionIndex] === index) {
+                    btn.classList.add('selected');
+                }
+                btn.innerHTML = `
+                    <span class="option-radio">${userAnswers[currentQuestionIndex] === index ? '✓' : ''}</span>
+                    <span>${option}</span>
+                `;
+                btn.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update button states
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (currentQuestionIndex === currentQuizQuestions.length - 1) {
+                nextBtn.textContent = 'Submit Quiz';
+                nextBtn.onclick = submitQuiz;
+            } else {
+                nextBtn.textContent = 'Next →';
+                nextBtn.onclick = nextQuestion;
+            }
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIndex] = index;
+            displayQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuizQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            currentQuizQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correct) {
+                    score++;
+                }
+            });
+
+            showResults(score);
+        }
+
+        function showResults(score) {
+            showingResults = true;
+            document.getElementById('quiz-interface').style.display = 'none';
+            document.getElementById('results-interface').style.display = 'block';
+
+            const total = currentQuizQuestions.length;
+            const percentage = Math.round((score / total) * 100);
+
+            document.getElementById('final-score').textContent = `${score}/${total}`;
+            document.getElementById('final-percentage').textContent = `${percentage}% Correct`;
+
+            let message = 'Great effort!';
+            if (score === total) message = '🎉 Perfect Score! Outstanding!';
+            else if (percentage >= 80) message = '✨ Excellent work!';
+            else if (percentage >= 60) message = '👍 Good job! Keep studying.';
+            else message = '📚 Review the material and try again!';
+
+            document.getElementById('results-message').textContent = message;
+
+            const reviewItems = document.getElementById('review-items');
+            reviewItems.innerHTML = '';
+
+            currentQuizQuestions.forEach((q, index) => {
+                const isCorrect = userAnswers[index] === q.correct;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `review-item ${!isCorrect ? 'incorrect' : ''}`;
+                
+                let html = `
+                    <div class="review-item-title">Q${index + 1}: ${q.question}</div>
+                    <div class="review-item-answer">Your answer: <span class="review-item-${isCorrect ? 'correct' : 'incorrect'}">${q.options[userAnswers[index]]}</span></div>
+                `;
+
+                if (!isCorrect) {
+                    html += `<div class="review-item-answer">Correct answer: <span class="review-item-correct">${q.options[q.correct]}</span></div>`;
+                }
+
+                html += `<div class="review-item-explanation">${q.explanation || 'Check your understanding of this concept.'}</div>`;
+                
+                itemDiv.innerHTML = html;
+                reviewItems.appendChild(itemDiv);
+            });
+        }
+
+        function retakeQuiz() {
+            document.getElementById('quiz-interface').style.display = 'block';
+            document.getElementById('results-interface').style.display = 'none';
+            initializeQuiz();
+        }
+
+        // Add explanations to questions
+        fullQuestionBank.forEach(q => {
+            if (!q.explanation) {
+                q.explanation = 'Review the material for this topic.';
+            }
+        });
+
+        // Set explanations
+        fullQuestionBank[0].explanation = 'CPU Registers (0.25-0.5ns) are the fastest memory, located directly in the CPU.';
+        fullQuestionBank[1].explanation = 'Locality of references is the principle that data accessed once is likely to be accessed again soon.';
+        fullQuestionBank[2].explanation = 'Going down the hierarchy: capacity increases, access time increases, but cost per bit decreases.';
+        fullQuestionBank[3].explanation = 'DRAM requires refresh circuitry to maintain charge on capacitors.';
+        fullQuestionBank[4].explanation = 'Registers are approximately 1000x faster than main memory.';
+        fullQuestionBank[5].explanation = 'Cache memory typically has an access time of 0.5-25ns.';
+        fullQuestionBank[6].explanation = 'Main memory (RAM) is used for temporary storage of data during I/O operations.';
+        fullQuestionBank[7].explanation = 'Locality of references justifies the use of faster cache memory near the CPU.';
+        fullQuestionBank[8].explanation = 'MMU performs runtime mapping between virtual and physical addresses.';
+        fullQuestionBank[9].explanation = 'Best Fit minimizes waste by allocating the smallest block that satisfies the request.';
+        fullQuestionBank[10].explanation = 'External fragmentation: enough total space exists but scattered and non-contiguous.';
+        fullQuestionBank[11].explanation = 'TLB (Translation Lookaside Buffer) caches recently used page-to-frame mappings.';
+        fullQuestionBank[12].explanation = 'FIFO suffers from Belady\'s Anomaly where more frames can increase page faults.';
+        fullQuestionBank[13].explanation = 'Thrashing: OS spends most time servicing page faults, not processing.';
+        fullQuestionBank[14].explanation = 'Swapping temporarily moves processes to disk backing store.';
+        fullQuestionBank[15].explanation = 'TLB Hit: page-to-frame mapping found in TLB without page table access.';
+        fullQuestionBank[16].explanation = 'Dynamic loading improves memory utilization by loading only needed routines.';
+        fullQuestionBank[17].explanation = 'Compiler creates segments for code, data, heap, stacks, and libraries.';
+        fullQuestionBank[18].explanation = 'Page fault occurs when a referenced page is not in main memory.';
+        fullQuestionBank[19].explanation = 'Optimal algorithm replaces the page not used for the longest time in the future.';
+        fullQuestionBank[20].explanation = 'Compile-time, Load-time, and Execution-time are the three stages of address binding.';
+        fullQuestionBank[21].explanation = 'Internal fragmentation: unused space within an allocated block.';
+        fullQuestionBank[22].explanation = 'I/O modules manage communication between CPU and peripheral devices.';
+        fullQuestionBank[23].explanation = 'Character devices like keyboards transfer data sequentially, one unit at a time.';
+        fullQuestionBank[24].explanation = 'CPU continuously polls device status, making it CPU-intensive.';
+        fullQuestionBank[25].explanation = 'DMA allows dedicated controller to transfer data without CPU involvement.';
+        fullQuestionBank[26].explanation = 'Hard drives are block devices that transfer fixed-size blocks of data.';
+        fullQuestionBank[27].explanation = 'Control bus manages operations and timing signals.';
+        fullQuestionBank[28].explanation = 'Programmed I/O is the most CPU-intensive as the CPU controls all transfers.';
+        fullQuestionBank[29].explanation = 'Buffering provides temporary storage during data transfer to manage speed differences.';
+        fullQuestionBank[30].explanation = 'Hard disk drives require DMA for efficient high-speed data transfers.';
+        fullQuestionBank[31].explanation = 'DMA controller independently handles data transfers without CPU involvement.';
+        fullQuestionBank[32].explanation = 'Interrupts allow CPU to work on other tasks while waiting for device readiness.';
+        fullQuestionBank[33].explanation = 'The primary challenge is the speed mismatch between fast CPU and slow peripherals.';
+        fullQuestionBank[34].explanation = 'Bus Adapter bridges different bus types to enable communication.';
+    </script>
+</body>
+</html>
