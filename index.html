@@ -742,228 +742,389 @@ Speed Mismatch Problems:
                 <h3 class="review-title">Review Your Answers</h3>
                 <div id="review-items"></div>
 
-                <button class="btn btn-primary btn-full" onclick="retakeQuiz()">↻ Retake Quiz</button>
+                <button class="btn btn-primary btn-full" onclick="retakeQuiz()">↻ Retake Quiz with Different Questions</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Enhanced Question Bank with Many More Questions
+        // ========== EXPANDED QUESTION BANK WITH 50+ QUESTIONS ==========
         const fullQuestionBank = [
-            // Memory Hierarchy Questions
+            // ===== MEMORY HIERARCHY (15 questions) =====
             {
                 topic: 'Memory Hierarchy',
                 question: 'Which memory level has the fastest access time?',
                 options: ['Cache Memory', 'CPU Registers', 'Main Memory', 'Magnetic Disk'],
-                correct: 1
+                correct: 1,
+                explanation: 'CPU Registers (0.25-0.5ns) are the fastest, located directly in the CPU.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'What is the primary purpose of memory hierarchy?',
                 options: ['To increase storage capacity', 'To minimize access time using locality of references', 'To eliminate the need for secondary storage', 'To reduce the cost of memory'],
-                correct: 1
+                correct: 1,
+                explanation: 'Memory hierarchy minimizes access time by utilizing the principle of locality of references.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'As you move down the memory hierarchy, what increases?',
                 options: ['Speed and cost per bit', 'Capacity and access time', 'Only capacity', 'Only speed'],
-                correct: 1
+                correct: 1,
+                explanation: 'Going down: capacity increases, access time increases, but cost per bit decreases.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'Which memory type requires refresh circuitry?',
                 options: ['Static RAM (SRAM)', 'Dynamic RAM (DRAM)', 'Cache Memory', 'Magnetic Tape'],
-                correct: 1
+                correct: 1,
+                explanation: 'DRAM requires refresh circuitry to maintain charge on capacitors.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'Approximately how many times faster is a register compared to main memory?',
                 options: ['10x faster', '100x faster', '1000x faster', '10,000x faster'],
-                correct: 2
+                correct: 2,
+                explanation: 'Registers are approximately 1000x faster than main memory.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'What is the typical access time for Cache Memory?',
                 options: ['0.25-0.5ns', '0.5-25ns', '80-250ns', '50+ milliseconds'],
-                correct: 1
-            },
-            {
-                topic: 'Memory Hierarchy',
-                question: 'Which memory level is used for temporary data storage during I/O operations?',
-                options: ['CPU Registers', 'Cache Memory', 'Main Memory', 'Magnetic Tape'],
-                correct: 2
+                correct: 1,
+                explanation: 'Cache memory typically has an access time of 0.5-25ns.'
             },
             {
                 topic: 'Memory Hierarchy',
                 question: 'What principle justifies the use of cache memory?',
                 options: ['Moore\'s Law', 'Locality of references', 'Belady\'s Anomaly', 'FIFO principle'],
-                correct: 1
+                correct: 1,
+                explanation: 'Locality of references justifies cache memory - data accessed once is likely accessed again.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory is typically implemented using SRAM?',
+                options: ['Main Memory', 'Cache Memory', 'Virtual Memory', 'Disk Storage'],
+                correct: 1,
+                explanation: 'Cache memory is typically implemented using SRAM for speed.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What is the capacity of typical main memory (RAM)?',
+                options: ['<1 KB', '<16 MB', '<16 GB', '>100 GB'],
+                correct: 2,
+                explanation: 'Main memory typically has a capacity of less than 16 GB.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'How much storage does a CPU register typically have?',
+                options: ['<1 KB', '1-2 MB', '1-4 GB', '100+ GB'],
+                correct: 0,
+                explanation: 'CPU registers have the smallest capacity, less than 1 KB.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory is non-volatile (retains data without power)?',
+                options: ['Cache Memory', 'Main Memory (RAM)', 'Secondary Storage (HDD/SSD)', 'CPU Registers'],
+                correct: 2,
+                explanation: 'Secondary storage like hard drives is non-volatile and retains data without power.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What is the access time for magnetic disk storage?',
+                options: ['0.25-0.5ns', '0.5-25ns', '80-250ns', '50+ milliseconds'],
+                correct: 3,
+                explanation: 'Magnetic disk storage has an access time of 50+ milliseconds.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Which memory type is used for long-term backup?',
+                options: ['Cache Memory', 'Main Memory', 'Magnetic Disk', 'Magnetic Tape'],
+                correct: 3,
+                explanation: 'Magnetic tape is used for long-term backup and archival purposes.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'Cost per bit increases as you move where in the hierarchy?',
+                options: ['Up (toward registers)', 'Down (toward tape)', 'Stays constant', 'Depends on access time'],
+                correct: 0,
+                explanation: 'Cost per bit increases as you move up toward CPU registers.'
+            },
+            {
+                topic: 'Memory Hierarchy',
+                question: 'What is the main advantage of SRAM over DRAM?',
+                options: ['Lower cost', 'Faster access time', 'Larger capacity', 'No refresh needed'],
+                correct: 1,
+                explanation: 'SRAM has faster access time but is more expensive and has smaller capacity.'
             },
 
-            // Memory Management Questions
+            // ===== MEMORY MANAGEMENT (20 questions) =====
             {
                 topic: 'Memory Management',
                 question: 'What does the MMU (Memory Management Unit) do?',
                 options: ['Allocates memory to processes', 'Performs address translation at runtime', 'Schedules CPU processes', 'Manages disk I/O'],
-                correct: 1
+                correct: 1,
+                explanation: 'MMU maps virtual addresses to physical addresses at runtime.'
             },
             {
                 topic: 'Memory Management',
                 question: 'Which allocation strategy minimizes internal fragmentation?',
                 options: ['First Fit', 'Best Fit', 'Worst Fit', 'Random Fit'],
-                correct: 1
+                correct: 1,
+                explanation: 'Best Fit allocates the smallest block that fits, minimizing waste.'
             },
             {
                 topic: 'Memory Management',
                 question: 'What is external fragmentation?',
                 options: ['Unused space within an allocated block', 'Non-contiguous free blocks unable to satisfy requests', 'Loss of memory due to page faults', 'Overflow of the segment table'],
-                correct: 1
+                correct: 1,
+                explanation: 'External fragmentation: enough total space but scattered and non-contiguous.'
             },
             {
                 topic: 'Memory Management',
                 question: 'What does TLB stand for and what is its purpose?',
                 options: ['Temporal Lookup Buffer - stores recent page references', 'Translation Lookaside Buffer - caches page table entries', 'Table Location Buffer - manages page tables', 'Temporary Load Buffer - stores temporary data'],
-                correct: 1
+                correct: 1,
+                explanation: 'TLB caches recently used page-to-frame mappings for fast lookup.'
             },
             {
                 topic: 'Memory Management',
-                question: 'Which page replacement algorithm can suffer from Belady\'s Anomaly?',
+                question: 'Which page replacement algorithm suffers from Belady\'s Anomaly?',
                 options: ['LRU', 'Optimal', 'FIFO', 'Second Chance'],
-                correct: 2
+                correct: 2,
+                explanation: 'FIFO can have more page faults with more page frames.'
             },
             {
                 topic: 'Memory Management',
                 question: 'What is thrashing in virtual memory systems?',
                 options: ['Data corruption from page faults', 'Excessive page faults reducing CPU utilization', 'Fragmentation of physical memory', 'Overflow of the TLB'],
-                correct: 1
+                correct: 1,
+                explanation: 'Thrashing: OS spends time on page faults, not actual processing.'
             },
             {
                 topic: 'Memory Management',
-                question: 'Swapping allows what in a memory management system?',
+                question: 'What does swapping allow in a memory management system?',
                 options: ['Faster CPU execution', 'Total physical space to exceed actual physical memory', 'Direct disk access without I/O modules', 'Elimination of cache misses'],
-                correct: 1
+                correct: 1,
+                explanation: 'Swapping temporarily moves processes to disk backing store.'
             },
             {
                 topic: 'Memory Management',
                 question: 'In paging, what is a TLB Hit?',
                 options: ['Page is found in secondary storage', 'Mapping found in TLB without accessing page table', 'Page fault occurs', 'Physical memory is full'],
-                correct: 1
+                correct: 1,
+                explanation: 'TLB Hit: page-to-frame mapping found in TLB without page table access.'
             },
             {
                 topic: 'Memory Management',
                 question: 'What does dynamic loading improve?',
                 options: ['CPU execution speed', 'Memory space utilization', 'Disk I/O speed', 'Cache hit ratio'],
-                correct: 1
-            },
-            {
-                topic: 'Memory Management',
-                question: 'Which segmentation creates separate segments?',
-                options: ['Code, data, and heap', 'Code, global variables, heap, stacks, and libraries', 'Only code and data', 'Only stack and heap'],
-                correct: 1
-            },
-            {
-                topic: 'Memory Management',
-                question: 'What is a page fault?',
-                options: ['Error in page table', 'Referenced page not in main memory', 'Page table overflow', 'TLB miss'],
-                correct: 1
-            },
-            {
-                topic: 'Memory Management',
-                question: 'In the optimal page replacement algorithm, which page is replaced?',
-                options: ['The oldest page', 'The page not used for longest time in future', 'The least recently used page', 'The page at the front of the queue'],
-                correct: 1
-            },
-            {
-                topic: 'Memory Management',
-                question: 'What are the three stages of address binding?',
-                options: ['Input, Processing, Output', 'Compile-time, Load-time, Execution-time', 'Read, Write, Execute', 'Fetch, Decode, Execute'],
-                correct: 1
+                correct: 1,
+                explanation: 'Dynamic loading improves memory utilization by loading only needed routines.'
             },
             {
                 topic: 'Memory Management',
                 question: 'What is internal fragmentation?',
                 options: ['Free blocks scattered in memory', 'Unused space within an allocated block', 'Page table corruption', 'Cache memory waste'],
-                correct: 1
+                correct: 1,
+                explanation: 'Internal fragmentation: unused space within an allocated block.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What are the three stages of address binding?',
+                options: ['Input, Processing, Output', 'Compile-time, Load-time, Execution-time', 'Read, Write, Execute', 'Fetch, Decode, Execute'],
+                correct: 1,
+                explanation: 'Compile-time, Load-time, and Execution-time are the three binding stages.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'In the optimal page replacement algorithm, which page is replaced?',
+                options: ['The oldest page', 'The page not used for longest time in future', 'The least recently used page', 'The page at the front of the queue'],
+                correct: 1,
+                explanation: 'Optimal algorithm replaces the page not used for the longest time in the future.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is a page fault?',
+                options: ['Error in page table', 'Referenced page not in main memory', 'Page table overflow', 'TLB miss'],
+                correct: 1,
+                explanation: 'Page fault occurs when a referenced page is not in main memory.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What does First Fit allocation do?',
+                options: ['Allocates smallest free block', 'Allocates first available block large enough', 'Allocates largest free block', 'Allocates random block'],
+                correct: 1,
+                explanation: 'First Fit allocates the first free block large enough to satisfy request.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is the benefit of LRU over FIFO page replacement?',
+                options: ['Simpler to implement', 'Better performance, uses past knowledge', 'No fragmentation', 'No TLB misses'],
+                correct: 1,
+                explanation: 'LRU uses past knowledge and generally performs better than FIFO.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What does compaction do in memory management?',
+                options: ['Increases page size', 'Combines fragmented blocks into one large block', 'Removes unused memory', 'Speeds up CPU'],
+                correct: 1,
+                explanation: 'Compaction reorganizes memory to combine fragmented blocks.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is a TLB Miss?',
+                options: ['Mapping found in TLB', 'Mapping not found in TLB', 'Page fault occurred', 'Memory full'],
+                correct: 1,
+                explanation: 'TLB Miss: page-to-frame mapping not found in TLB, requires page table access.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'Which memory allocation has variable-sized partitions?',
+                options: ['Fixed Partitioning', 'Dynamic Partitioning', 'Paging', 'Segmentation'],
+                correct: 1,
+                explanation: 'Dynamic Partitioning uses variable-sized partitions based on process needs.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What is the backing store in swapping?',
+                options: ['CPU cache', 'Main memory', 'Fast disk storage', 'Magnetic tape'],
+                correct: 2,
+                explanation: 'Backing store is a fast disk used to temporarily store swapped-out processes.'
+            },
+            {
+                topic: 'Memory Management',
+                question: 'What does demand paging do?',
+                options: ['Loads entire process at once', 'Loads pages only when referenced', 'Preloads all pages before execution', 'Removes pages immediately'],
+                correct: 1,
+                explanation: 'Demand paging loads pages only when they are referenced during execution.'
             },
 
-            // Input/Output Questions
+            // ===== INPUT/OUTPUT SYSTEMS (18 questions) =====
             {
                 topic: 'Input/Output',
                 question: 'What is the primary purpose of I/O modules?',
                 options: ['Execute CPU instructions', 'Manage communication between CPU and peripherals', 'Store temporary data', 'Perform arithmetic operations'],
-                correct: 1
+                correct: 1,
+                explanation: 'I/O modules manage communication between CPU and peripheral devices.'
             },
             {
                 topic: 'Input/Output',
                 question: 'Which I/O device type transfers data sequentially?',
                 options: ['Block Devices', 'Character Devices', 'Communication Devices', 'Sensors'],
-                correct: 1
+                correct: 1,
+                explanation: 'Character devices like keyboards transfer data sequentially, one unit at a time.'
             },
             {
                 topic: 'Input/Output',
                 question: 'In programmed I/O, what does the CPU repeatedly do?',
                 options: ['Wait for interrupts', 'Poll device status', 'Transfer data directly to memory', 'Execute other programs'],
-                correct: 1
+                correct: 1,
+                explanation: 'CPU continuously polls device status, making programmed I/O CPU-intensive.'
             },
             {
                 topic: 'Input/Output',
                 question: 'What is the main advantage of Direct Memory Access (DMA)?',
                 options: ['Simplifies I/O programming', 'Eliminates need for I/O controllers', 'Allows high-speed data transfer without CPU involvement', 'Increases CPU performance'],
-                correct: 2
+                correct: 2,
+                explanation: 'DMA allows dedicated controller to transfer data without CPU involvement.'
             },
             {
                 topic: 'Input/Output',
                 question: 'Which is an example of a block device?',
                 options: ['Keyboard', 'Mouse', 'Hard Drive (HDD)', 'Network Interface Card'],
-                correct: 2
+                correct: 2,
+                explanation: 'Hard drives transfer fixed-size blocks of data.'
             },
             {
                 topic: 'Input/Output',
                 question: 'What does the control bus do?',
                 options: ['Carries data between components', 'Specifies memory locations', 'Manages operations and timing', 'Transfers instructions only'],
-                correct: 2
+                correct: 2,
+                explanation: 'Control bus manages operations and timing signals.'
             },
             {
                 topic: 'Input/Output',
                 question: 'Which I/O transfer method is most CPU-intensive?',
                 options: ['Interrupt-Driven I/O', 'Direct Memory Access', 'Programmed I/O', 'Asynchronous I/O'],
-                correct: 2
+                correct: 2,
+                explanation: 'Programmed I/O is most CPU-intensive as CPU controls all transfers.'
             },
             {
                 topic: 'Input/Output',
                 question: 'What is buffering in I/O systems?',
                 options: ['Temporary storage during data transfer', 'Direct transfer without waiting', 'Compression of data', 'Encryption of data'],
-                correct: 0
+                correct: 0,
+                explanation: 'Buffering provides temporary storage to handle speed differences.'
             },
             {
                 topic: 'Input/Output',
                 question: 'Which device requires DMA for optimal performance?',
                 options: ['Keyboard', 'Mouse', 'Hard Disk Drive', 'Display Monitor'],
-                correct: 2
+                correct: 2,
+                explanation: 'Hard disk drives require DMA for efficient high-speed data transfers.'
             },
             {
                 topic: 'Input/Output',
                 question: 'What is a DMA controller?',
-                options: ['A device that reads instructions from memory', 'A dedicated controller that handles data transfers independently', 'A CPU that specializes in I/O', 'A type of cache memory'],
-                correct: 1
+                options: ['A device that reads instructions', 'A dedicated controller handling data transfers independently', 'A CPU specializing in I/O', 'A type of cache memory'],
+                correct: 1,
+                explanation: 'DMA controller independently handles data transfers without CPU.'
             },
             {
                 topic: 'Input/Output',
                 question: 'How do interrupts improve I/O efficiency?',
-                options: ['They speed up data transfer', 'They allow CPU to work on other tasks while waiting for device', 'They eliminate the need for buffers', 'They reduce memory requirements'],
-                correct: 1
+                options: ['They speed up data transfer', 'They allow CPU to work on other tasks while waiting', 'They eliminate the need for buffers', 'They reduce memory requirements'],
+                correct: 1,
+                explanation: 'Interrupts allow CPU to work on other tasks while waiting for device.'
             },
             {
                 topic: 'Input/Output',
                 question: 'What is the primary challenge in I/O systems?',
                 options: ['Lack of storage space', 'Speed mismatch between CPU and peripherals', 'Insufficient bandwidth', 'Poor device design'],
-                correct: 1
+                correct: 1,
+                explanation: 'Speed mismatch between CPU and peripherals is the main challenge.'
             },
             {
                 topic: 'Input/Output',
                 question: 'Which component bridges different bus types?',
                 options: ['I/O Module', 'Bus Adapter', 'I/O Controller', 'Data Controller'],
-                correct: 1
+                correct: 1,
+                explanation: 'Bus Adapter bridges different bus types to enable communication.'
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What do communication devices enable?',
+                options: ['Data storage', 'Data exchange over networks', 'Physical interaction', 'Character input'],
+                correct: 1,
+                explanation: 'Communication devices like NICs enable data exchange over networks.'
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What is data bandwidth in I/O systems?',
+                options: ['Speed of a single transfer', 'Maximum data transfer capacity', 'Physical width of data lines', 'Frequency of transfers'],
+                correct: 1,
+                explanation: 'Bandwidth is the maximum amount of data that can be transferred.'
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which polling method is most efficient?',
+                options: ['Polling is always inefficient', 'Polling with interrupts', 'Polling without interrupts', 'Polling is never used'],
+                correct: 0,
+                explanation: 'Polling is generally inefficient; interrupt-driven is better.'
+            },
+            {
+                topic: 'Input/Output',
+                question: 'What does an I/O controller do?',
+                options: ['Executes I/O instructions', 'Manages CPU-peripheral communication', 'Stores I/O data', 'Schedules I/O operations'],
+                correct: 1,
+                explanation: 'I/O controller manages communication and handles data formatting.'
+            },
+            {
+                topic: 'Input/Output',
+                question: 'Which I/O method allows CPU to do other work?',
+                options: ['Programmed I/O', 'Polling', 'Interrupt-Driven or DMA', 'Synchronous I/O'],
+                correct: 2,
+                explanation: 'Interrupt-Driven I/O and DMA free CPU for other tasks.'
             }
         ];
 
@@ -1001,7 +1162,9 @@ Speed Mismatch Problems:
         }
 
         function generateRandomQuiz() {
+            // Shuffle the entire question bank
             const shuffled = [...fullQuestionBank].sort(() => Math.random() - 0.5);
+            // Select first 13 questions
             currentQuizQuestions = shuffled.slice(0, 13);
         }
 
@@ -1114,7 +1277,7 @@ Speed Mismatch Problems:
                     html += `<div class="review-item-answer">Correct answer: <span class="review-item-correct">${q.options[q.correct]}</span></div>`;
                 }
 
-                html += `<div class="review-item-explanation">${q.explanation || 'Check your understanding of this concept.'}</div>`;
+                html += `<div class="review-item-explanation">${q.explanation}</div>`;
                 
                 itemDiv.innerHTML = html;
                 reviewItems.appendChild(itemDiv);
@@ -1126,50 +1289,6 @@ Speed Mismatch Problems:
             document.getElementById('results-interface').style.display = 'none';
             initializeQuiz();
         }
-
-        // Add explanations to questions
-        fullQuestionBank.forEach(q => {
-            if (!q.explanation) {
-                q.explanation = 'Review the material for this topic.';
-            }
-        });
-
-        // Set explanations
-        fullQuestionBank[0].explanation = 'CPU Registers (0.25-0.5ns) are the fastest memory, located directly in the CPU.';
-        fullQuestionBank[1].explanation = 'Locality of references is the principle that data accessed once is likely to be accessed again soon.';
-        fullQuestionBank[2].explanation = 'Going down the hierarchy: capacity increases, access time increases, but cost per bit decreases.';
-        fullQuestionBank[3].explanation = 'DRAM requires refresh circuitry to maintain charge on capacitors.';
-        fullQuestionBank[4].explanation = 'Registers are approximately 1000x faster than main memory.';
-        fullQuestionBank[5].explanation = 'Cache memory typically has an access time of 0.5-25ns.';
-        fullQuestionBank[6].explanation = 'Main memory (RAM) is used for temporary storage of data during I/O operations.';
-        fullQuestionBank[7].explanation = 'Locality of references justifies the use of faster cache memory near the CPU.';
-        fullQuestionBank[8].explanation = 'MMU performs runtime mapping between virtual and physical addresses.';
-        fullQuestionBank[9].explanation = 'Best Fit minimizes waste by allocating the smallest block that satisfies the request.';
-        fullQuestionBank[10].explanation = 'External fragmentation: enough total space exists but scattered and non-contiguous.';
-        fullQuestionBank[11].explanation = 'TLB (Translation Lookaside Buffer) caches recently used page-to-frame mappings.';
-        fullQuestionBank[12].explanation = 'FIFO suffers from Belady\'s Anomaly where more frames can increase page faults.';
-        fullQuestionBank[13].explanation = 'Thrashing: OS spends most time servicing page faults, not processing.';
-        fullQuestionBank[14].explanation = 'Swapping temporarily moves processes to disk backing store.';
-        fullQuestionBank[15].explanation = 'TLB Hit: page-to-frame mapping found in TLB without page table access.';
-        fullQuestionBank[16].explanation = 'Dynamic loading improves memory utilization by loading only needed routines.';
-        fullQuestionBank[17].explanation = 'Compiler creates segments for code, data, heap, stacks, and libraries.';
-        fullQuestionBank[18].explanation = 'Page fault occurs when a referenced page is not in main memory.';
-        fullQuestionBank[19].explanation = 'Optimal algorithm replaces the page not used for the longest time in the future.';
-        fullQuestionBank[20].explanation = 'Compile-time, Load-time, and Execution-time are the three stages of address binding.';
-        fullQuestionBank[21].explanation = 'Internal fragmentation: unused space within an allocated block.';
-        fullQuestionBank[22].explanation = 'I/O modules manage communication between CPU and peripheral devices.';
-        fullQuestionBank[23].explanation = 'Character devices like keyboards transfer data sequentially, one unit at a time.';
-        fullQuestionBank[24].explanation = 'CPU continuously polls device status, making it CPU-intensive.';
-        fullQuestionBank[25].explanation = 'DMA allows dedicated controller to transfer data without CPU involvement.';
-        fullQuestionBank[26].explanation = 'Hard drives are block devices that transfer fixed-size blocks of data.';
-        fullQuestionBank[27].explanation = 'Control bus manages operations and timing signals.';
-        fullQuestionBank[28].explanation = 'Programmed I/O is the most CPU-intensive as the CPU controls all transfers.';
-        fullQuestionBank[29].explanation = 'Buffering provides temporary storage during data transfer to manage speed differences.';
-        fullQuestionBank[30].explanation = 'Hard disk drives require DMA for efficient high-speed data transfers.';
-        fullQuestionBank[31].explanation = 'DMA controller independently handles data transfers without CPU involvement.';
-        fullQuestionBank[32].explanation = 'Interrupts allow CPU to work on other tasks while waiting for device readiness.';
-        fullQuestionBank[33].explanation = 'The primary challenge is the speed mismatch between fast CPU and slow peripherals.';
-        fullQuestionBank[34].explanation = 'Bus Adapter bridges different bus types to enable communication.';
     </script>
 </body>
 </html>
